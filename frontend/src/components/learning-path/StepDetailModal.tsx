@@ -26,6 +26,7 @@ interface StepDetailModalProps {
     estimated_time?: string;
     match_percentage?: number;
     public_reviews?: string[];
+    professor_reviews?: string[];
   } | null;
 }
 
@@ -74,6 +75,27 @@ export default function StepDetailModal({
                       borderRadius="md"
                       borderWidth="1px"
                       borderColor="gray.200"
+                    >
+                      <Text fontSize="sm">{review}</Text>
+                    </Box>
+                  ))}
+                </VStack>
+              </Box>
+            )}
+            {step.professor_reviews && step.professor_reviews.length > 0 && (
+              <Box mt={4}>
+                <Text fontWeight="medium" mb={2}>
+                  Professor Reviews:
+                </Text>
+                <VStack align="stretch" spacing={3}>
+                  {step.professor_reviews.map((review, index) => (
+                    <Box
+                      key={index}
+                      p={3}
+                      bg="blue.50"
+                      borderRadius="md"
+                      borderWidth="1px"
+                      borderColor="blue.200"
                     >
                       <Text fontSize="sm">{review}</Text>
                     </Box>

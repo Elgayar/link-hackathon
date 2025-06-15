@@ -171,8 +171,8 @@ def generate_questions(assistant_id: str, responses: list, student_type: str, ma
         logger.error(f"Error in generate_questions: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
 
-def generate_learning_path_from_responses(assistant_id: str, responses: list) -> list:
-    """Generate a learning path based on survey responses."""
+def generate_learning_path_from_responses(assistant_id: str, responses: list, search_query: str = None) -> list:
+    """Generate a learning path based on survey responses and optional search query."""
     try:
         # Format responses for the assistant
         formatted_responses = "\n".join([
@@ -183,20 +183,24 @@ def generate_learning_path_from_responses(assistant_id: str, responses: list) ->
         # Create the prompt for the assistant
         prompt = f"""Based on the following survey responses, create a personalized learning path with specific steps, resources, and time estimates:
 
-{formatted_responses}
+            {formatted_responses}
 
-Please provide a structured learning path with the following format for each step:
-- title: A clear, concise title for the step
-- description: A detailed explanation of what to do and why
-- estimated_time: How long this step should take
-- match_percentage: The percentage of the course that matches the student's profile
-- public_reviews: A list of public reviews of the course
+            {f"Additionally, focus on courses and topics related to: {search_query}" if search_query else ""}
 
-ONLY recommend courses that are in the course catalog in your context, do not recommend random courses.
-In the title, include only the course number and name, do not include verbose descriptions.
-If there are public reviews on a given course, include them in a list of strings.
+            Please provide a structured learning path with the following format for each step:
+            - title: A clear, concise title for the step
+            - description: A detailed explanation of what to do and why
+            - estimated_time: How long this step should take
+            - match_percentage: The percentage of the course that matches the student's profile
+            - public_reviews: A list of public reviews of the course
+            - professor_reviews: A list of professor reviews of the course
 
-Format the response as a JSON array of objects with these fields."""
+            ONLY recommend courses that are in the course catalog in your context, do not recommend random courses.
+            In the title, include only the course number and name, do not include verbose descriptions.
+            If there are public reviews on a given course, include them in a list of strings.
+            If there are professor reviews and ratings on a given course, include them in a list of strings.
+
+            Format the response as a JSON array of objects with these fields."""
 
         # Create a thread if it doesn't exist
         thread = client.beta.threads.create()

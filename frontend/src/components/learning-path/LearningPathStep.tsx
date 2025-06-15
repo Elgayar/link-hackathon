@@ -49,49 +49,50 @@ export default function LearningPathStep({
         bg={bgColor}
         borderWidth="1px"
         borderColor={isViewed ? "green.300" : borderColor}
-        borderRadius="lg"
-        p={4}
+        borderRadius="md"
+        p={3}
         position="relative"
         cursor="pointer"
         onClick={onClick}
         _hover={{
-          transform: "translateX(8px)",
-          shadow: "md",
+          transform: "translateX(4px)",
+          shadow: "sm",
         }}
         transition="all 0.2s"
       >
-        <Flex justify="space-between" align="center">
-          <Flex direction="column" flex={1}>
-            <HStack spacing={2} mb={2}>
+        <Flex justify="space-between" align="center" gap={2}>
+          <Flex direction="column" flex={1} gap={1}>
+            <HStack spacing={2}>
               {step.match_percentage && (
-                <Tag size="sm" colorScheme="blue" variant="subtle">
+                <Tag size="sm" colorScheme="blue" variant="subtle" px={2}>
                   <TagLabel>{step.match_percentage}% Match</TagLabel>
                 </Tag>
               )}
               {step.estimated_time && (
-                <Tag size="sm" colorScheme="gray" variant="subtle">
+                <Tag size="sm" colorScheme="gray" variant="subtle" px={2}>
                   <TagLeftIcon as={TimeIcon} />
                   <TagLabel>{step.estimated_time}</TagLabel>
                 </Tag>
               )}
-              {isViewed && <Icon as={CheckIcon} color="green.500" />}
+              {isViewed && (
+                <Icon as={CheckIcon} color="green.500" boxSize={4} />
+              )}
             </HStack>
-            <Text fontSize="lg" fontWeight="medium" mb={2}>
+            <Text fontSize="md" fontWeight="medium" noOfLines={1}>
               {step.title}
             </Text>
           </Flex>
-          <HStack spacing={4}>
-            <Icon
-              as={ChevronRightIcon}
-              color="gray.400"
-              onClick={(e) => {
-                e.stopPropagation();
-                onDetailClick();
-              }}
-              _hover={{ color: "blue.500" }}
-              transition="color 0.2s"
-            />
-          </HStack>
+          <Icon
+            as={ChevronRightIcon}
+            color="gray.400"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDetailClick();
+            }}
+            _hover={{ color: "blue.500" }}
+            transition="color 0.2s"
+            boxSize={5}
+          />
         </Flex>
       </Box>
     </MotionBox>

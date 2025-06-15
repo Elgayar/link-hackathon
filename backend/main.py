@@ -105,8 +105,8 @@ async def submit_survey_response(
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/learning-path/{session_id}")
-async def get_learning_path(session_id: str):
-    """Generate a learning path based on survey responses."""
+async def get_learning_path(session_id: str, search: str = None):
+    """Generate a learning path based on survey responses and optional search query."""
     try:
         session = get_session(session_id)
         if not session:
@@ -118,7 +118,7 @@ async def get_learning_path(session_id: str):
             raise HTTPException(status_code=400, detail="No survey responses found")
         
         # Generate learning path using the assistant
-        learning_path = generate_learning_path_from_responses(session["assistant_id"], survey_responses)
+        learning_path = generate_learning_path_from_responses(session["assistant_id"], survey_responses, search)
         
         # Update session with learning path
         db = firestore.client()
